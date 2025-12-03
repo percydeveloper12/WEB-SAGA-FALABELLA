@@ -2,64 +2,114 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Centro de Ayuda - Reclutamiento</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f4f6f8;
+    }
+    .navbar {
+      background-color: #198754;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      letter-spacing: 1px;
+      color: white !important;
+    }
+    .navbar-nav .nav-link {
+      color: white !important;
+      font-weight: 500;
+    }
+    .navbar-nav .dropdown-menu {
+      border-radius: 8px;
+      border: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .card-custom {
+      border: none;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card-custom:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    }
+  </style>
 </head>
-<body class="bg-gray-100 flex">
+<body>
 
-  <!-- Sidebar -->
-  <aside class="w-64 bg-white shadow-lg h-screen fixed">
-    <div class="p-6 text-center border-b">
-      <h2 class="text-xl font-bold text-green-600">Reclutamiento</h2>
+  <!-- 🔹 NAVBAR SUPERIOR -->
+  <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/dashboard">
+        <i class="fa-solid fa-building fa-lg me-2"></i> SAGA FALABELLA
+      </a>
+
+      <!-- Botón menú móvil -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard"><i class="fa-solid fa-house me-1"></i>Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/vacantes"><i class="fa-solid fa-briefcase me-1"></i>Vacantes</a>
+          </li>
+
+          <!-- 🔽 Dropdown de usuario -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+              <i class="fa-solid fa-user-circle me-1"></i> Mi Cuenta
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" href="/perfil"><i class="fa-solid fa-id-badge me-2"></i>Ver Perfil</a></li>
+              <li><a class="dropdown-item" href="/ayuda"><i class="fa-solid fa-circle-question me-2"></i>Ayuda</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="/logout"><i class="fa-solid fa-right-from-bracket me-2"></i>Cerrar Sesión</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
-    <nav class="mt-6">
-      <ul class="space-y-2 px-4">
-        <li><a href="/dashboard" class="flex items-center p-2 hover:bg-green-100 text-gray-700">📊 <span class="ml-2">Dashboard</span></a></li>
-        <li><a href="/perfil" class="flex items-center p-2 hover:bg-green-100 text-gray-700">👤 <span class="ml-2">Ver Perfil</span></a></li>
-        <li><a href="/postulaciones" class="flex items-center p-2 hover:bg-green-100 text-gray-700">📨 <span class="ml-2">Postulaciones</span></a></li>
-        <li><a href="/ayuda" class="flex items-center p-2 bg-green-200 font-bold text-gray-800 rounded">❓ <span class="ml-2">Ayuda</span></a></li>
-        <li><a href="/logout" class="flex items-center p-2 hover:bg-red-100 text-red-600">🚪 <span class="ml-2">Cerrar Sesión</span></a></li>
-      </ul>
-    </nav>
-  </aside>
+  </nav>
 
-  <!-- Contenido principal -->
-  <main class="ml-64 p-8 w-full">
-    <h1 class="text-2xl font-bold text-green-700 mb-6">❓ Centro de Ayuda</h1>
+  <!-- 🔹 CONTENIDO PRINCIPAL -->
+  <main class="container py-5">
+    <h2 class="mb-4 text-center fw-bold text-success"><i class="fa-solid fa-question-circle me-2"></i>Centro de Ayuda</h2>
 
     <!-- Preguntas Frecuentes -->
-    <div class="bg-white p-6 rounded shadow mb-8">
-      <h2 class="text-lg font-semibold mb-4">📌 Preguntas Frecuentes</h2>
-      <ul class="space-y-4 text-gray-700">
-        <li>
-          <strong>¿Cómo me postulo a una vacante?</strong><br>
-          Debes iniciar sesión con tu cuenta, seleccionar una vacante disponible y hacer clic en "Postular".
-        </li>
-        <li>
-          <strong>¿Puedo editar mi perfil?</strong><br>
-          Sí. Ve a "Ver Perfil" y actualiza tus datos personales, CV o experiencia laboral.
-        </li>
-        <li>
-          <strong>¿Puedo postular a más de una vacante?</strong><br>
-          Sí, puedes postular a todas las vacantes que desees mientras estén activas.
-        </li>
-        <li>
-          <strong>¿Cómo sabré si fui seleccionado?</strong><br>
-          Si tu postulación es aceptada, recibirás una notificación dentro del sistema o por correo.
-        </li>
+    <div class="card card-custom mb-4 p-4">
+      <h4 class="fw-semibold mb-3"><i class="fa-solid fa-clipboard-list me-2"></i>Preguntas Frecuentes</h4>
+      <ul class="list-group list-group-flush text-muted">
+        <li class="list-group-item"><strong>¿Cómo me postulo a una vacante?</strong> Inicia sesión, selecciona una vacante y haz clic en "Postular".</li>
+        <li class="list-group-item"><strong>¿Puedo editar mi perfil?</strong> Sí, ve a "Ver Perfil" y actualiza tus datos personales, CV o experiencia laboral.</li>
+        <li class="list-group-item"><strong>¿Puedo postular a más de una vacante?</strong> Sí, puedes postular a todas las vacantes activas que desees.</li>
+        <li class="list-group-item"><strong>¿Cómo sabré si fui seleccionado?</strong> Recibirás una notificación dentro del sistema o por correo si eres aceptado.</li>
       </ul>
     </div>
 
     <!-- Contacto -->
-    <div class="bg-white p-6 rounded shadow">
-      <h2 class="text-lg font-semibold mb-4">📬 ¿Necesitas más ayuda?</h2>
-      <p class="mb-4 text-gray-700">Si tienes problemas técnicos o necesitas asistencia personalizada, puedes escribirnos:</p>
-      <ul class="text-gray-700 space-y-2">
-        <li>📧 Correo: <a href="mailto:soporte@sagafalabella.com" class="text-blue-600 underline">soporte@sagafalabella.com</a></li>
+    <div class="card card-custom p-4">
+      <h4 class="fw-semibold mb-3"><i class="fa-solid fa-envelope me-2"></i>¿Necesitas más ayuda?</h4>
+      <p class="text-muted mb-3">Si tienes problemas técnicos o necesitas asistencia personalizada, puedes escribirnos:</p>
+      <ul class="list-unstyled text-muted">
+        <li>📧 Correo: <a href="mailto:soporte@sagafalabella.com" class="text-success text-decoration-underline">soporte@sagafalabella.com</a></li>
         <li>📞 Teléfono: (01) 555-1234 (Lunes a Viernes, 9:00 a 18:00)</li>
       </ul>
     </div>
   </main>
 
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,73 +1,153 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario de Registro</title>
+    <title>Registro de Usuario | Saga Falabella</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(20,20,20,0.8)),
+                url('https://www.altavoz.pe/wp-content/uploads/2022/10/saga-falabella.jpg') no-repeat center center/cover;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .register-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(14px);
+            border-radius: 20px;
+            box-shadow: 0 6px 40px rgba(0, 0, 0, 0.3);
+            color: #fff;
+            width: 100%;
+            max-width: 480px;
+            padding: 2.8rem;
+        }
+
+        .register-card h3 {
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1.8rem;
+            text-transform: uppercase;
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.18);
+            border: none;
+            color: #fff;
+            border-radius: 10px;
+            transition: 0.3s ease;
+        }
+
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 8px #28a745;
+        }
+
+        label {
+            color: #e0e0e0;
+            font-weight: 500;
+        }
+
+        .btn-register {
+            background-color: #28a745;
+            border: none;
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 0.8rem;
+            font-size: 1.1rem;
+            transition: 0.3s ease;
+        }
+
+        .btn-register:hover {
+            background-color: #218838;
+            transform: scale(1.03);
+        }
+
+        a {
+            color: #28a745;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+
+        .saga-logo {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #28a745;
+            text-shadow: 0 0 6px rgba(40, 167, 69, 0.7);
+            margin-bottom: 1rem;
+        }
+    </style>
 </head>
 <body>
-<section class="bg-falabella d-flex align-items-center justify-content-center"
-         style="background-image: url('https://www.altavoz.pe/wp-content/uploads/2022/10/saga-falabella.jpg'); background-size: cover; background-position: center; min-height: 100vh;">
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div class="card bg-light p-4 shadow">
-                    <div class="card-body text-center">
-                        <h3 class="text-center mb-4">Registro de Usuario</h3>
 
-                       <form th:action="@{/registro}" th:object="${registro}" method="post">
-                            <div class="mb-3 text-start">
-                                <label for="nombre" class="form-label">Nombre</label>
-                                <input type="text" id="nombre" th:field="*{nombre}" class="form-control" required />
-                            </div>
+    <div class="register-card text-center">
+        <div class="saga-logo">SAGA FALABELLA</div>
+        <h3><i class="fa-solid fa-user-plus me-2"></i>Crear Cuenta</h3>
 
-                            <div class="mb-3 text-start">
-                                <label for="usuario" class="form-label">Usuario</label>
-                                <input type="text" id="usuario" th:field="*{usuario}" class="form-control" required />
-                            </div>
+        <!-- Mensajes de validación -->
+        <div th:if="${param.exito}" class="alert alert-success text-center">
+            <i class="fa-solid fa-circle-check me-2"></i>¡Registro exitoso! Ahora puedes iniciar sesión.
+        </div>
 
-                            <div class="mb-3 text-start">
-                                <label for="correo" class="form-label">Correo</label>
-                                <input type="email" id="correo" th:field="*{correo}" class="form-control" required />
-                            </div>
+        <div th:if="${param.error == 'nomatch'}" class="alert alert-danger text-center">
+            <i class="fa-solid fa-circle-exclamation me-2"></i>Las contraseñas no coinciden. Inténtalo de nuevo.
+        </div>
 
-                            <div class="mb-3 text-start">
-                                <label for="password" class="form-label">Contraseña</label>
-                                <input type="password" id="password" th:field="*{password}" class="form-control" required />
-                            </div>
+        <div th:if="${param.error == 'correo'}" class="alert alert-danger text-center">
+            <i class="fa-solid fa-envelope-circle-xmark me-2"></i>Ya existe una cuenta registrada con ese correo electrónico.
+        </div>
 
-                            <div class="mb-3 text-start">
-                                <label for="repetirPassword" class="form-label">Repetir Contraseña</label>
-                                <input type="password" id="repetirPassword" th:field="*{repetirPassword}" class="form-control" required />
-                            </div>
+        <!-- Formulario de registro -->
+        <form th:action="@{/registro}" th:object="${registro}" method="post" class="text-start mt-3">
 
-                            <button type="submit" class="btn btn-primary">Registrarse</button>
-                        </form>
-
-                        <div class="mt-3 text-start">
-                            <a href="/login" class="text-decoration-none">← Volver al login</a>
-                        </div>
-
-                        <!-- Mensajes -->
-                        <div th:if="${param.exito}" class="alert alert-success mt-3 text-center">
-                            ¡Registro exitoso en el sistema!
-                        </div>
-
-                        <div th:if="${param.error} == 'nomatch'" class="alert alert-danger mt-3 text-center">
-                            Las contraseñas no coinciden. Inténtalo de nuevo.
-                        </div>
-
-                        <div th:if="${param.error} == 'correo'" class="alert alert-danger mt-3 text-center">
-                            Ya existe una cuenta registrada con ese correo electrónico.
-                        </div>
-
-                    </div>
-                </div>
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre completo</label>
+                <input type="text" id="nombre" th:field="*{nombre}" class="form-control form-control-lg" required />
             </div>
+
+            <div class="mb-3">
+                <label for="usuario" class="form-label">Usuario</label>
+                <input type="text" id="usuario" th:field="*{usuario}" class="form-control form-control-lg" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="correo" class="form-label">Correo electrónico</label>
+                <input type="email" id="correo" th:field="*{correo}" class="form-control form-control-lg" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" id="password" th:field="*{password}" class="form-control form-control-lg" required />
+            </div>
+
+            <div class="mb-4">
+                <label for="repetirPassword" class="form-label">Repetir contraseña</label>
+                <input type="password" id="repetirPassword" th:field="*{repetirPassword}" class="form-control form-control-lg" required />
+            </div>
+
+            <button type="submit" class="btn btn-register btn-lg w-100 mb-3">
+                <i class="fa-solid fa-user-check me-2"></i>Registrarse
+            </button>
+        </form>
+
+        <div class="text-center mt-2">
+            <a href="/login"><i class="fa-solid fa-arrow-left me-1"></i> Volver al login</a>
         </div>
     </div>
-</section>
+
 </body>
 </html>
-

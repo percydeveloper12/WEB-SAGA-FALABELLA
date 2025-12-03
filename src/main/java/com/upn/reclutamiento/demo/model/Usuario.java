@@ -13,6 +13,9 @@ public class Usuario {
     private String nombreUsuario;
     private String correo;
     private String password;
+    private String descripcion;
+    
+    private String rol; // ADMIN o Postulante
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private PerfilPostulante perfilPostulante;
@@ -70,4 +73,22 @@ public class Usuario {
     public void setCargo(Cargo cargo) {
         this.cargo = cargo;
     }
+
+	public String getRol() {
+		return rol;
+	}
+
+	public void setRol(String rol) {
+		this.rol = rol;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	
+	
 }

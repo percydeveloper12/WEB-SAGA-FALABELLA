@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
   <meta charset="UTF-8">
   <title th:text="${titulo}">Sistema de Reclutamiento</title>
@@ -7,49 +8,52 @@
 </head>
 <body class="bg-gray-100 flex">
 
-<!-- Sidebar (fragmento) -->
-<aside th:fragment="sidebar" class="w-64 bg-white shadow-lg h-screen fixed">
-  <div class="p-6 text-center border-b">
-    <h2 class="text-xl font-bold text-green-600">Reclutamiento</h2>
-  </div>
-  <nav class="mt-6">
-    <ul class="space-y-2 px-4">
-      <li>
-  <a href="/proyecto" class="flex items-center p-2 hover:bg-green-100 text-gray-700">
-    🏠 <span class="ml-2">Inicio</span>
-  </a>
-</li>
-      <li>
-        <a href="/dashboard" class="flex items-center p-2 hover:bg-green-100 text-gray-700">
-          📊 <span class="ml-2">Dashboard</span>
-        </a>
-      </li>
-      <li>
-        <a href="/perfil" class="flex items-center p-2 hover:bg-green-100 text-gray-700">
-          👤 <span class="ml-2">Ver Perfil</span>
-        </a>
-      </li>
-      <li>
-        <a href="/postulaciones" class="flex items-center p-2 hover:bg-green-100 text-gray-700">
-          📨 <span class="ml-2">Postulaciones</span>
-        </a>
-      </li>
-      <li>
-        <a href="/ayuda" class="flex items-center p-2 hover:bg-green-100 text-gray-700">
-          ❓ <span class="ml-2">Ayuda</span>
-        </a>
-      </li>
-      <li>
-        <a href="/logout" class="flex items-center p-2 hover:bg-red-100 text-red-600">
-          🚪 <span class="ml-2">Cerrar Sesión</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
-</aside>
+  <!-- Sidebar (fragmento dinámico) -->
+  <aside th:fragment="sidebar" class="w-64 bg-white shadow-lg h-screen fixed">
+    <div class="p-6 text-center border-b">
+      <h2 class="text-xl font-bold text-green-600">Reclutamiento</h2>
+    </div>
 
+    <nav class="mt-6">
+      <ul class="space-y-2 px-4">
 
-  <!-- Contenido dinámico -->
+        <!-- 👨‍💼 MENÚ ADMIN -->
+        <li sec:authorize="hasRole('ADMIN')">
+          <a href="/dashboard" class="flex items-center p-2 hover:bg-green-100 text-gray-700">
+            📊 <span class="ml-2">Dashboard</span>
+          </a>
+        </li>
+
+        <li sec:authorize="hasRole('ADMIN')">
+          <a href="/postulaciones" class="flex items-center p-2 hover:bg-green-100 text-gray-700">
+            📨 <span class="ml-2">Postulaciones Recibidas</span>
+          </a>
+        </li>
+
+        <!-- 👤 MENÚ POSTULANTE -->
+        <li sec:authorize="hasRole('POSTULANTE')">
+          <a href="/perfil" class="flex items-center p-2 hover:bg-green-100 text-gray-700">
+            👤 <span class="ml-2">Ver Perfil</span>
+          </a>
+        </li>
+
+        <li sec:authorize="hasRole('POSTULANTE')">
+          <a href="/ayuda" class="flex items-center p-2 hover:bg-green-100 text-gray-700">
+            ❓ <span class="ml-2">Ayuda</span>
+          </a>
+        </li>
+
+        <!-- 🔐 OPCIÓN COMÚN -->
+        <li sec:authorize="isAuthenticated()">
+          <a href="/logout" class="flex items-center p-2 hover:bg-red-100 text-red-600">
+            🚪 <span class="ml-2">Cerrar Sesión</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- Contenido principal -->
   <main class="ml-64 p-8 w-full">
     <div th:fragment="contenido"></div>
   </main>

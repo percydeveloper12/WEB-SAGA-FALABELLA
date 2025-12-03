@@ -1,11 +1,10 @@
 package com.upn.reclutamiento.demo.repository;
 
+import com.upn.reclutamiento.demo.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-
-import com.upn.reclutamiento.demo.model.*;
-
-public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
-    
+@Repository
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Usuario findByCorreo(String correo);
 }

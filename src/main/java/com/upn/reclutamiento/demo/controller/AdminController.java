@@ -20,6 +20,6 @@ public class AdminController {
     public String listarPostulaciones(Model model) {
         List<Postulacion> postulaciones = postulacionRepository.findAll();
         model.addAttribute("postulaciones", postulaciones);
-        return "admin/postulaciones"; // asegúrate de tener la vista
+        return "admin/postulaciones"; 
     }
 }

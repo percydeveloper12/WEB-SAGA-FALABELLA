@@ -1,40 +1,53 @@
 package com.upn.reclutamiento.demo.controller;
 
+import com.upn.reclutamiento.demo.model.Usuario;
+import com.upn.reclutamiento.demo.model.Vacante;
+import com.upn.reclutamiento.demo.repository.UsuarioRepository;
+import com.upn.reclutamiento.demo.repository.VacanteRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.List;
-import com.upn.reclutamiento.demo.model.Usuario;
-import com.upn.reclutamiento.demo.model.Vacante;
-import com.upn.reclutamiento.demo.repository.VacanteRepository;
-
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ProyectoController {
 
     private final VacanteRepository vacanteRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public ProyectoController(VacanteRepository vacanteRepository) {
+    public ProyectoController(VacanteRepository vacanteRepository,
+                              UsuarioRepository usuarioRepository) {
         this.vacanteRepository = vacanteRepository;
+        this.usuarioRepository = usuarioRepository;
     }
-    
+
     
     @GetMapping("/proyecto")
-    public String mostrarVacantes(@RequestParam(name = "busqueda", required = false) String busqueda,
-                                   Model model, HttpSession session) {
+    public String verVacantes(@RequestParam(name = "busqueda", required = false) String busqueda,
+                              Model model,
+                              Principal principal) {
 
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario != null) {
-            model.addAttribute("nombreUsuario", usuario.getNombreUsuario());
+        
+        if (principal != null) {
+            Usuario usuario = usuarioRepository.findByCorreo(principal.getName());
+            model.addAttribute("usuario", usuario);
         }
 
         List<Vacante> vacantes;
 
         if (busqueda != null && !busqueda.isEmpty()) {
+            
+            if (busqueda.equalsIgnoreCase("rrhh")) busqueda = "Recursos Humanos";
+            else if (busqueda.equalsIgnoreCase("it") || busqueda.equalsIgnoreCase("sistemas")) busqueda = "Sistemas";
+            else if (busqueda.equalsIgnoreCase("logistica")) busqueda = "Logística";
+            else if (busqueda.equalsIgnoreCase("marketing")) busqueda = "Marketing";
+
             vacantes = vacanteRepository.findByTituloContainingIgnoreCaseOrAreaContainingIgnoreCase(busqueda, busqueda);
+            model.addAttribute("busqueda", busqueda);
         } else {
             vacantes = vacanteRepository.findAll();
         }
@@ -43,47 +56,10 @@ public class ProyectoController {
         return "proyecto";
     }
 
-
     
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate(); 
-        return "redirect:/login"; 
+        session.invalidate();
+        return "redirect:/login";
     }
-    
-    @GetMapping("/perfil")
-    public String mostrarPerfil(HttpSession session, Model model) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-
-        if (usuario == null) {
-            return "redirect:/login";
-        }
-
-        model.addAttribute("usuario", usuario.getNombreUsuario());
-
-        if (usuario.getPerfilPostulante() != null) {
-            model.addAttribute("nombre", usuario.getPerfilPostulante().getNombre());
-            model.addAttribute("apellido", usuario.getPerfilPostulante().getApellido());
-            model.addAttribute("dni", usuario.getPerfilPostulante().getDni());
-            model.addAttribute("cv", usuario.getPerfilPostulante().getCv());
-        } else {
-            model.addAttribute("nombre", "No registrado");
-            model.addAttribute("apellido", "No registrado");
-            model.addAttribute("dni", "No registrado");
-            model.addAttribute("cv", "No registrado");
-        }
-
-        return "perfil";
-    }
-    
-    
-
-
-
-
-
-
-
-
-    
 }

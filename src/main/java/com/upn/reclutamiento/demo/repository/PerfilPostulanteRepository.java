@@ -1,11 +1,10 @@
-// PerfilPostulanteRepository.java
 package com.upn.reclutamiento.demo.repository;
 
 import com.upn.reclutamiento.demo.model.PerfilPostulante;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface PerfilPostulanteRepository extends JpaRepository<PerfilPostulante, Integer> {
-
-    // Buscar el perfil postulante según el correo de su usuario relacionado
+@Repository
+public interface PerfilPostulanteRepository extends JpaRepository<PerfilPostulante, Long> {
     PerfilPostulante findByUsuarioCorreo(String correo);
 }
